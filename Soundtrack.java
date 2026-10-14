@@ -7,17 +7,25 @@ import java.io.File;
 
 public class Soundtrack {
     
-    public static synchronized void playSound(final String url) {
-  
-     try {
-            File soundFile = new File("Loonboon.wav");
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioIn);
-            clip.start();
-        } catch (Exception e) {
-            System.err.println("Error playing sound: " + e.getMessage());
-        }
-    }      
+    public static synchronized void loadSound() throws Exception {
+        File soundFile = new File("C:\\Users\\paula\\Documents\\NetBeansProjects\\SpellingBun\\SpellingBun\\src\\main\\resources\\Loonboon.wav");
+        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile);
+        Clip clip = AudioSystem.getClip();
+        clip.open(audioInputStream);
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
+        clip.start();
+    }
+
+//    public void playSound() {
+//        if (clip != null && !clip.isRunning()) {
+//            clip.start();
+//        }
+//    }
+//
+//    public void loopSound() {
+//        if (clip != null) {
+//            clip.loop(Clip.LOOP_CONTINUOUSLY);
+//        }
+//    }
 }
 
