@@ -3,8 +3,8 @@ package com.mycompany.spellingbun;
 //import com.mycompany.spellingbun.Soundtrack;
 //import com.mycompany.spellingbun.FoxSprite;
 
-import javax.swing.*;
 import java.awt.Color;
+import javax.swing.*;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -20,6 +20,7 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -55,12 +56,17 @@ public class SpellingBun {
         f.pack();
         f.setVisible(true);
         
+//        JLabel scoreLabel = new JLabel();
+//        scoreLabel.setText(String.valueOf(score));
+//        scoreLabel.setSize(new Dimension(200, 200));
+//        scoreLabel.setAlignmentX(200);
+//        scoreLabel.setVisible(true);
+//        f.add(scoreLabel);
+        
         // do NOT put this into a while loop
         // but I might as well, I paid for the whole CPU and I will use the whole CPU
         Soundtrack.loadSound();
-
-
-        Toolkit toolkit = Toolkit.getDefaultToolkit(); /* get AWT toolkit */
+        Toolkit toolkit = Toolkit.getDefaultToolkit(); // get AWT toolkit
         
 //        new Timer("Drawer", true).scheduleAtFixedRate(new TimerTask(){
 //                @Override
@@ -94,6 +100,7 @@ public class SpellingBun {
 class MyGame extends JPanel implements KeyListener {
 
     // private BufferedImage fox1 = null;
+    int score = 0;
     int foxIndex = 0; // focus on the first fox
     int spawnCooldown = 3 * 60;
     int livesLost = 0;
@@ -119,7 +126,13 @@ class MyGame extends JPanel implements KeyListener {
     
     public MyGame() throws FontFormatException, IOException {
         
-        File retroFont = new File("retroFont.ttf");
+        try {
+            GraphicsEnvironment ge = 
+                GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("retroFont.ttf")));
+        } catch (IOException|FontFormatException e) {
+        //Handle exception
+        }
         grass = loadImage("grass.png");
         bush = loadImage("bush.png");
         stump = loadImage("stump.png");
@@ -159,24 +172,34 @@ class MyGame extends JPanel implements KeyListener {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        g.setFont(new Font("retroFont.ttf", Font.PLAIN, 50));
+        g.setColor(Color.white);
         g.drawImage(background, 0, 0, this);
         g.drawImage(bunnyUI, 0, 0, 525, 217, this);
         g.drawImage(bush, 0, 420, this);
-        g.drawImage(stump, 1400, 275 + (livesLost * 129), 140, 386, this); // 275
-        g.drawImage(grass, 0, 590, this);
+        g.drawImage(stump, 1400, 275 + (livesLost * 129), 140, 386, this);
         g.drawImage(bunny1, 1400, 175 + (livesLost * 129), 128, 128, this);
-        g.drawImage(arrow, 200, 675, 64, 64, this); // redo this sprite
-        
+        g.drawImage(grass, 0, 590, this);       
+        g.drawImage(arrow, 200, 675, 64, 64, this);
+        g.drawString(String.valueOf(score), 450, 140);
         spawnCooldown--;
         
         if(isTyping = true) {
-            g.drawImage()
+            //g.drawImage()
         }
+        
+//        // every 60 seconds a minute passes in Africa
+//        for (int i = 1; i <= 60 * 60; i--) {
+//            if (i == 60 * 60) {
+//                livesLost = livesLost - 1;
+//                i = 1;
+//            }
+//        }
         
         if(spawnCooldown <= 0) {
             // https://klipy.com/gifs/fop-fox
             foxes.add(new FoxSprite(-300, 500, new String (dictionary.getWord())));
-            spawnCooldown = 3 * 60;
+            spawnCooldown = 4 * 60;
         }        
         if (livesLost <= 0) {
             g.drawImage(carrot3, 0, 0, 525, 217, this);
@@ -211,7 +234,7 @@ class MyGame extends JPanel implements KeyListener {
             Font font = new Font("retroFont.ttf", 0, 100);
             String gameOver = "Game over";
             g.setFont(font);
-            g.drawChars(gameOver.toCharArray(), 0, gameOver.length(), 800, 450);
+            g.drawChars(gameOver.toCharArray(), 0, gameOver.length(), 550, 350);
         }     
     }
 
@@ -222,6 +245,7 @@ class MyGame extends JPanel implements KeyListener {
             // font style change goes here
             if (foxes.get(foxIndex).isKill() == true) {
                 foxes.remove(foxIndex);
+                score = score + 100;
             }
         }
     }
@@ -239,10 +263,10 @@ class MyGame extends JPanel implements KeyListener {
             foxIndex = 0;
             
         } if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            foxIndex = foxIndex - 1;
+            foxIndex = foxIndex + 1;
             System.out.println("Left");
         } if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            foxIndex = foxIndex + 1;
+            foxIndex = foxIndex - 1;
             System.out.println("Right");
         }
     }
