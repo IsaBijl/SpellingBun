@@ -1,15 +1,6 @@
-package com.mycompany.spellingbun;
-
-import java.awt.Font;
+import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.swing.*;
 
 public class FoxSprite {
     
@@ -18,14 +9,19 @@ public class FoxSprite {
     int xAxis;
     int yAxis;
     boolean isKill = false;
+    boolean isSelected = false;
+    private final int animationLength = 3;
     private static BufferedImage[] foxWalk = {
         MyGame.loadImage("fox1.png"),
         MyGame.loadImage("fox2.png"),
-        MyGame.loadImage("fox3.png")
+        MyGame.loadImage("fox3.png"),
+        MyGame.loadImage("foxH1.png"),
+        MyGame.loadImage("foxH2.png"),
+        MyGame.loadImage("foxH3.png")
     };
     
     public void testKey(char key) {
-        if (isKill == true) {
+        if (isKill) {
             return; // preventing out of bounds
         }
         char letter = word.charAt(wordProgress); // letter index
@@ -47,7 +43,7 @@ public class FoxSprite {
         return xAxis;
     }
     
-    public FoxSprite (int xAxis, int yAxis, String word) {
+    public FoxSprite(int xAxis, int yAxis, String word) {
         this.xAxis = xAxis;
         this.yAxis = yAxis;
         this.word = word;
@@ -55,25 +51,35 @@ public class FoxSprite {
     
     private int currentFrame = 0;
     private int currentDelay = 0;
-    private static int walkDelay = 7;
+    private static final int WALK_DELAY = 7;
     
     public void move() {
-        xAxis +=2;
+        xAxis += 2;
     }
     
     public void paintComponent(Graphics g) {
         
-        Font font = new Font("retroFont.ttf" , 0, 35);
-        g.setFont(font);
-        g.drawChars(word.toCharArray(), 0, word.length(), xAxis + 50, yAxis - 50);      
-        g.drawImage(foxWalk[currentFrame], xAxis, yAxis, 320, 160, null);
+        int arrayOffset = 0;
+        if (isSelected) {
+            arrayOffset = 3;
+        }
+        
+        int rectStroke = 5;
+        int rectWidth = 30 * word.length() + 2 * rectStroke;
+        int rectHeigth = 48 + 2 * rectStroke;
+        g.setColor(Color.BLACK);
+        g.fillRect(xAxis + 50 - rectStroke, yAxis - 155 + 2 * rectStroke, rectWidth, rectHeigth);
+        g.setColor(Color.WHITE);
+        g.setFont(new java.awt.Font("Bitstream Vera Sans Mono", 0, 48));
+        g.drawChars(word.toCharArray(), 0, word.length(), xAxis + 50, yAxis - 100);
+        g.drawImage(foxWalk[currentFrame + arrayOffset], xAxis, yAxis, 320, 160, null);
         currentDelay++;
         
         // fox sprite animation
-        if (currentDelay >= walkDelay) {
+        if (currentDelay >= WALK_DELAY) {
             currentFrame++;
             currentDelay = 0;
-            if (currentFrame >= foxWalk.length) {
+            if (currentFrame >= animationLength) {
                 currentFrame = 0;
             }
         }

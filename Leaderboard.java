@@ -14,7 +14,7 @@ public class Leaderboard {
         File source = new File("Leaderboard.txt");
         
         for (int x = 0; x < LIST_LENGTH; x++) { // default names to AAA for empty entries
-            for (int y = 0; y < NAME_LENGTH; y ++) {
+            for (int y = 0; y < NAME_LENGTH; y++) {
                 array[x][y] = (int) 'A';
             }
         }
@@ -28,19 +28,24 @@ public class Leaderboard {
                 }
             }
             
-        } catch (FileNotFoundException error) {}
-        
+        } catch (FileNotFoundException error) {
+            System.out.println("Leaderboard.txt not found");
+        }
         return array;
-}
+    }
     
     public static int[][] getLeaderboard() {
         return lBoard;
     }
     
-    public static void submitEntry(char[] name, int score) {
+    public static void submitEntry(String[] name, int score) {
+        char[] charArray = new char[NAME_LENGTH];
+        for (int index = 0; index < NAME_LENGTH; index++) {
+            charArray[index] = name[index].charAt(0);
+        }
         int position = getPosition(score);
         if (position < LIST_LENGTH) {
-            lBoardUpdate(position, name, score);
+            BoardUpdate(position, charArray, score);
             updateFile();
         }
     }
@@ -57,11 +62,11 @@ public class Leaderboard {
                 greaterFound = true;
             }
             compareIndex--;
-        } while(!greaterFound && position > 0);
+        } while (!greaterFound && position > 0);
         return position;
     }
     
-    private static void lBoardUpdate(int position, char[] name, int score) {
+    private static void BoardUpdate(int position, char[] name, int score) {
         for (int x = LIST_LENGTH - 1; x > position; x--) { // shift old entries down
             for (int y = 0; y < NAME_LENGTH + 1; y++) {
                 lBoard[x][y] = lBoard[x - 1][y];
@@ -85,7 +90,9 @@ public class Leaderboard {
         
         try (FileWriter writer = new FileWriter("Leaderboard.txt", false)) {
             writer.write(output);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            System.out.println("Leaderboard.txt not found");
+        }
         
     }
     

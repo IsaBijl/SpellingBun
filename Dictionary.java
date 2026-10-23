@@ -1,28 +1,28 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Dictionary {
-    private final int MEM_SIZE = 5; // maximum length of repetition ban list
-    private final int MIN_LENGTH = 4; // how long a word needs to be to be stored
+    private final int memSize = 5; // maximum length of repetition ban list
+    private final int minLength = 4; // how long a word needs to be to be stored
     
     private final ArrayList<String> wordList;
     private final int wListLength;
     private final boolean longEnough; // used to bypass repetition ban list if wordList is too short
-    private ArrayList<Integer> usedWords = new ArrayList<>(); // repetition ban list
+    public ArrayList<Integer> usedWords = new ArrayList<>(); // repetition ban list
     
     public Dictionary() {
         wordList = compileDictionary();
         wListLength = wordList.size();
-        longEnough = wListLength > MEM_SIZE;
+        longEnough = wListLength > memSize;
     }
     
     private ArrayList<String> compileDictionary() {
         ArrayList<String> list = new ArrayList<>();
         File source = new File("Word Source.txt");  // retrieve word source file
         
-        try (Scanner scanner = new Scanner (source)) { // start reading the file
+        try (Scanner scanner = new Scanner(source)) { // start reading the file
             
             while (scanner.hasNextLine()) { // run through every line of text
                 String line = scanner.nextLine().toLowerCase();
@@ -34,7 +34,8 @@ public class Dictionary {
                 for (int i = 0; i < lineLength; i++) { // run through every character in line
                     currentChar = line.charAt(i);
                     wordEnd = i >= lineLength - 1; // check if character is last in line
-                    // this method of filtering for words is very simplistic and coarse, but accounting for every
+                    // this method of filtering for words is very simplistic and coarse
+                    // but accounting for every
                     // edge case would quickly go far beyond the scope of this project
                     if (currentChar >= 'a' && currentChar <= 'z') {
                         // check if character is in standard alphabet
@@ -43,7 +44,7 @@ public class Dictionary {
                         wordEnd = true;
                     }
                     if (wordEnd) {
-                        if (currentWord.length() >= MIN_LENGTH && !list.contains(currentWord)) {
+                        if (currentWord.length() >= minLength && !list.contains(currentWord)) {
                             // check if word is long enough to use and not already in dictionary
                             list.add(currentWord);
                         }
@@ -51,8 +52,9 @@ public class Dictionary {
                     }
                 }
             }
-            
-        } catch (FileNotFoundException error) {}
+        } catch (FileNotFoundException error)  {
+            System.out.println("Word Source.txt not found");
+        }
         
         if (list.isEmpty()) { // fallback for empty or nonexistent "Word Source.txt"
             list.add("vacuum");
@@ -85,8 +87,8 @@ public class Dictionary {
     
     private void markUsed(int index) {
         usedWords.add(0, index);
-        if (usedWords.size() > MEM_SIZE) {
-            usedWords.remove(MEM_SIZE);
+        if (usedWords.size() > memSize) {
+            usedWords.remove(memSize);
         }
     }
 }

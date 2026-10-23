@@ -1,15 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
-
-/**
- *
- * @author isa
- */
 public class NameSelector extends javax.swing.JPanel {
-    private int activeIndex = 0;
-    private String[] charArray = {"A","A","A"};
+    public int activeIndex = 0;
+    public String[] charArray = {"A", "A", "A"};
 
     /**
      * Creates new form NameSelector
@@ -17,7 +8,8 @@ public class NameSelector extends javax.swing.JPanel {
     public NameSelector() {
         initComponents();
     }
-public void changeChar(boolean up) {
+    
+    public void changeChar(boolean up) {
         char current = charArray[activeIndex].charAt(0);
         if (current == 'A' && up) {
             charArray[activeIndex] = "Z";

@@ -1,15 +1,5 @@
+import java.awt.Graphics;
 
-import java.awt.event.KeyEvent;
-
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
-
-/**
- *
- * @author isa
- */
 public class StartScreen extends javax.swing.JPanel {
 
     /**
@@ -110,14 +100,16 @@ public class StartScreen extends javax.swing.JPanel {
         add(rightHolder);
     }// </editor-fold>//GEN-END:initComponents
     
-    private void startGame() {
+    public void visualUpdate() {
+        lboardDisplay1.visualUpdate();
+    }
+    
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
         
     }
     
-    public void enterPressed() {
-        startGame();
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel centerHolder;
     private javax.swing.JPanel jPanel1;
@@ -129,4 +121,5 @@ public class StartScreen extends javax.swing.JPanel {
     private javax.swing.JLabel title;
     private javax.swing.JPanel titleHolder;
     // End of variables declaration//GEN-END:variables
+
 }

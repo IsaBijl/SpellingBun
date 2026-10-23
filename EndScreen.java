@@ -1,25 +1,13 @@
-
-import java.awt.event.KeyEvent;
-
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
-
-/**
- *
- * @author isa
- */
 public class EndScreen extends javax.swing.JPanel {
-private final String SCORE_PREFIX = "SCORE: ";
-private String score = "000000";
-private final String scoreFull;
+    private final String scorePrefix = "SCORE: ";
+    public String score = "000000";
+    private String scoreFull;
 
     /**
      * Creates new form EndScreen
      */
     public EndScreen() {
-        scoreFull = SCORE_PREFIX + score;
+        scoreFull = scorePrefix + score;
         initComponents();
         nameSelector1.requestFocus();
         nameSelector1.visualUpdate();
@@ -75,13 +63,6 @@ private final String scoreFull;
         nameSelectorHolder.setOpaque(false);
         nameSelectorHolder.setPreferredSize(new java.awt.Dimension(1600, 400));
         nameSelectorHolder.setLayout(new java.awt.BorderLayout());
-
-        nameSelector1.setOpaque(false);
-        nameSelector1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                nameSelector1KeyPressed(evt);
-            }
-        });
         nameSelectorHolder.add(nameSelector1, java.awt.BorderLayout.CENTER);
 
         add(nameSelectorHolder);
@@ -94,28 +75,6 @@ private final String scoreFull;
         pressEnterLabel.setPreferredSize(new java.awt.Dimension(1600, 200));
         add(pressEnterLabel);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void nameSelector1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameSelector1KeyPressed
-        // TODO add your handling code here:
-        switch (evt.getKeyCode()) {
-            case KeyEvent.VK_UP:
-                nameSelector1.changeChar(true);
-                break;
-            case KeyEvent.VK_DOWN:
-                nameSelector1.changeChar(false);
-                break;
-            case KeyEvent.VK_RIGHT:
-                nameSelector1.changeActive(true);
-                break;
-            case KeyEvent.VK_LEFT:
-                nameSelector1.changeActive(false);
-                break;
-            case KeyEvent.VK_ENTER:
-                
-                break;
-        }
-        nameSelector1.visualUpdate();
-    }//GEN-LAST:event_nameSelector1KeyPressed
 
     public void arrowLeft() {
         nameSelector1.changeActive(false);
@@ -135,6 +94,21 @@ private final String scoreFull;
     public void arrowDown() {
         nameSelector1.changeChar(false);
         nameSelector1.visualUpdate();
+    }
+    
+    public void visualUpdate() {
+        nameSelector1.activeIndex = 0;
+        nameSelector1.charArray[0] = "A";
+        nameSelector1.charArray[1] = "A";
+        nameSelector1.charArray[2] = "A";
+        nameSelector1.visualUpdate();
+        
+        scoreFull = scorePrefix + score;
+        scoreLabel.setText(scoreFull);
+    }
+    
+    public String[] retrieveName() {
+        return nameSelector1.charArray;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

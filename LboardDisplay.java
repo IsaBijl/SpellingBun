@@ -1,9 +1,9 @@
 import javax.swing.DefaultListModel;
 
 public class LboardDisplay extends javax.swing.JPanel {
-    private final int[][] sourceArray;
-    private final DefaultListModel<String> nameDLM;
-    private final DefaultListModel<String> scoreDLM;
+    private int[][] sourceArray;
+    private DefaultListModel<String> nameDLM;
+    private DefaultListModel<String> scoreDLM;
 
     /**
      * Creates new form LboardDisplay
@@ -418,6 +418,35 @@ public class LboardDisplay extends javax.swing.JPanel {
         return output;
     }
 
+    public void visualUpdate() {
+        sourceArray = Leaderboard.getLeaderboard();
+        nameDLM = arrayToDLM(sourceArray, true);
+        scoreDLM = arrayToDLM(sourceArray, false);
+        
+        nameLabel.setText(nameDLM.get(0));
+        nameLabel1.setText(nameDLM.get(1));
+        nameLabel2.setText(nameDLM.get(2));
+        nameLabel3.setText(nameDLM.get(3));
+        nameLabel4.setText(nameDLM.get(4));
+        nameLabel5.setText(nameDLM.get(5));
+        nameLabel6.setText(nameDLM.get(6));
+        nameLabel7.setText(nameDLM.get(7));
+        nameLabel8.setText(nameDLM.get(8));
+        nameLabel9.setText(nameDLM.get(9));
+        
+        scoreLabel.setText(scoreDLM.get(0));
+        scoreLabel1.setText(scoreDLM.get(1));
+        scoreLabel2.setText(scoreDLM.get(2));
+        scoreLabel3.setText(scoreDLM.get(3));
+        scoreLabel4.setText(scoreDLM.get(4));
+        scoreLabel5.setText(scoreDLM.get(5));
+        scoreLabel6.setText(scoreDLM.get(6));
+        scoreLabel7.setText(scoreDLM.get(7));
+        scoreLabel8.setText(scoreDLM.get(8));
+        scoreLabel9.setText(scoreDLM.get(9));
+        
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel entryHolder;
     private javax.swing.JPanel entryHolder1;
